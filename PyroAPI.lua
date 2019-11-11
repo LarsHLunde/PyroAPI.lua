@@ -1,8 +1,8 @@
--- PyroAPI v1.2
+-- PyroAPI v1.2.1
 
 -- MIT License
 
--- Copyright (c) 2018 pyrokiller
+-- Copyright (c) 2019 pyrokiller
 
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +76,12 @@
 -- identifier - The start of the line to be replaced
 -- replacer - The line to replace the identified line
 -- returns nothing
+
+-- api.escape_string(string)
+-- Takes a string and replaces special characters with the escaped
+-- versions of those characters for use in scripts.
+-- For copying config files in string form in Lua
+-- returns string
 
 
 local PyroAPI = {}
@@ -215,6 +221,31 @@ function PyroAPI.replace_line(file,indentifier,replacer)
 		end
 		fp:close()
 	end
+end
+
+function PyroAPI.escape_string(input)
+	local output = ""
+	local chars = {}
+	
+	chars[7] = "\\a"
+	chars[8] = "\\b"
+	chars[9] = "\\t"
+	chars[10] = "\\n"
+	chars[11] = "\\v"
+	chars[12] = "\\f"
+	chars[13] = "\\r"
+	chars[34] = "\\\""
+	chars[39] = "\\\'"
+	chars[92] = "\\\\"
+	
+	for i = 1, input:len() do
+		if chars[input:byte(i)] then
+			output = output .. chars[input:byte(i)]
+		else
+			output = output .. input:sub(i,i)
+		end
+	end
+	return(output)
 end
 
 return PyroAPI
