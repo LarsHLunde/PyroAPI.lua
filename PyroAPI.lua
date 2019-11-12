@@ -1,4 +1,4 @@
--- PyroAPI v1.2.1
+-- PyroAPI v1.2.2
 
 -- MIT License
 
@@ -224,27 +224,18 @@ function PyroAPI.replace_line(file,indentifier,replacer)
 end
 
 function PyroAPI.escape_string(input)
-	local output = ""
-	local chars = {}
+	local output = input:gsub("\\", "\\\\")
 	
-	chars[7] = "\\a"
-	chars[8] = "\\b"
-	chars[9] = "\\t"
-	chars[10] = "\\n"
-	chars[11] = "\\v"
-	chars[12] = "\\f"
-	chars[13] = "\\r"
-	chars[34] = "\\\""
-	chars[39] = "\\\'"
-	chars[92] = "\\\\"
+	output = output:gsub("\a", "\\a")
+	output = output:gsub("\b", "\\b")
+	output = output:gsub("\t", "\\t")
+	output = output:gsub("\n", "\\n")
+	output = output:gsub("\v", "\\v")
+	output = output:gsub("\f", "\\f")
+	output = output:gsub("\r", "\\r")
+	output = output:gsub("\"", "\\\"")
+	output = output:gsub("\'", "\\\'")
 	
-	for i = 1, input:len() do
-		if chars[input:byte(i)] then
-			output = output .. chars[input:byte(i)]
-		else
-			output = output .. input:sub(i,i)
-		end
-	end
 	return(output)
 end
 
